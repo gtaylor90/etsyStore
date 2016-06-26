@@ -1,6 +1,9 @@
 // example url for requests
 // https://openapi.etsy.com/v2/listings/active?api_key=r0qoq1mdfhswufpc5krm18n4
 
+// sample search URL 
+// https://openapi.etsy.com/v2/listings/active.js?keywords="+terms+"&limit=12&includes=Images:1&api_key="+api_key
+
 var qs = function(input) {
 	return document.querySelector(input)
 }
@@ -16,7 +19,6 @@ var ItemCollection = Backbone.Collection.$.extend({
 var EtsyRoutes = Backbone.Router.extend({
 	routes: {
 		"/store/:shopID/:itemId": "doItemView",
-		"/store/:shopID": "doShopView", 
 		"/search/:topic": "doSearchView", 
 		"/home": "showHomeView", 
 		"*catchAll": "redirect" 
@@ -24,18 +26,17 @@ var EtsyRoutes = Backbone.Router.extend({
 	doItemView: function(itemID) {
 
 	},
-	doShopView: function(shopID) {
-
-	},
 	doSearchView: function(searchTerm) {
 		var searchCollection = new ItemCollection()
 		searchCollection.fetch({
-			dataType: 'jsonp'
+			dataType: 'jsonp',
+			processData: true,
 			data: {
 
 			}
 
-		})
+		});
+		new ItemsView(searchCollection);
 	},
 	showHomeView: function() {
 
