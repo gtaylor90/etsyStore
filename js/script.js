@@ -62,6 +62,7 @@ var ItemsView = Backbone.View.extend({
         for (var i = 0; i < itemsArray.length; i++) {
             var itemMod = itemsArray[i]
             var itemAttr = itemMod.attributes
+            console.log('heres what the Images prop looks like: ' + itemAttr.Images)
             var imgAttr = itemAttr.Images[0]
                 // console.log(itemMod)
                 // build out the HTML from here…
@@ -89,13 +90,13 @@ var DetailView = Backbone.View.extend({
         var itemAttr = itemMod.attributes
         var htmlString = ''
         // cool img thing doesn't work 
-        // var imgAttr = itemAttr.Images 
+        var imgAttr = itemAttr.Images 
         // console.log("imageAttr>>", imgAttr)
             // console.log(itemMod)
             // build out the HTML from here…
         htmlString += '<div id="' + itemAttr.listing_id + '" class="itemContainer">'
         htmlString += '<h2 id="' + itemAttr.listing_id + '">' + itemAttr.title + '</h2>'
-        // htmlString += '<img id="' + itemAttr.listing_id + '" src="' + imgAttr.url_fullxfull + '">'
+        htmlString += '<img id="' + itemAttr.listing_id + '" src="' + imgAttr.url_fullxfull + '">'
         htmlString += '<p id="' + itemAttr.listing_id + '">' + itemAttr.description + '</P>'
         htmlString += '</div>'
         this.el.innerHTML = htmlString
@@ -118,6 +119,7 @@ var EtsyRouter = Backbone.Router.extend({
             dataType: 'jsonp',
             processData: true,
             data: {
+                includes: 'Images:1',
                 fq: "_id" + id,
                 api_key: itemModel._key
             }
@@ -131,8 +133,9 @@ var EtsyRouter = Backbone.Router.extend({
             dataType: 'jsonp',
             processData: true,
             data: {
+                includes: 'Images:1',
                 api_key: searchCollection._key,
-                q: searchTerm
+                keywords: searchTerm
 
             }
 
