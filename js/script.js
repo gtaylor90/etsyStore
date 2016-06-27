@@ -25,7 +25,12 @@ var ItemCollection = Backbone.Collection.extend({
 });
 
 var ItemModel = Backbone.Model.extend({
-    url: "https://openapi.etsy.com/v2/listings/active.js",
+    url: function() {
+        return "https://openapi.etsy.com/v2/listings/" + this.listingId + ".js"
+    },
+    initialize: function(inputId) {
+        this.listingId = inputId
+    },
     _key: "r0qoq1mdfhswufpc5krm18n4",
     parse: function(rawJSON) {
         console.log('parsing Item Model')
@@ -113,14 +118,14 @@ var EtsyRouter = Backbone.Router.extend({
     },
     doItemView: function(id) {
         console.log('Doing Item View')
-        var itemModel = new ItemModel()
+        var itemModel = new ItemModel(id)
         console.log("item model>>", itemModel)
         itemModel.fetch({
             dataType: 'jsonp',
             processData: true,
             data: {
                 includes: 'Images:1',
-                fq: "_id" + id,
+                listing_id: id,
                 api_key: itemModel._key
             }
         })
